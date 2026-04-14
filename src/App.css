@@ -1,4 +1,5 @@
 body {
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,4 +9,27 @@ body {
 
 h1 {
   text-align: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;
+  cursor: pointer;
+  position: relative; /*don't know why I am using position to relative */
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.right-border {
+  border-right: 0.5rem solid #0074ab;
+}
+
+.bottom-border {
+  border-bottom: 0.5rem solid #0074ab;
 }
