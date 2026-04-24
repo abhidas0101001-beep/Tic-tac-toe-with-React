@@ -3,7 +3,7 @@ import Board from "./Board";
 function TicTacToe() {
   return (
     <div>
-      TicTacToe
+      <h1>TicTacToe</h1>
       <Board />
     </div>
   );

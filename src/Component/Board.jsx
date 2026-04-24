@@ -1,67 +1,77 @@
+import Reset from "./Reset";
 import Strike from "./Strike";
 import Tile from "./Tile";
 import { useState } from "react";
 
 function Board() {
-  const [playerTurn, setPlayerTurn] = useState(0);
-  const [playerTxt, setPlayerTxt] = useState("");
+  const [board, setBoard] = useState(Array(9).fill(""));
+  const [playerTurn, setPlayerTurn] = useState("");
 
-  const playerPlay = () => {
-    console.log("working");
+  const handleClick = (index) => {
+    if (board[index] !== "") return;
 
-    if (playerTurn == 0) {
-      setPlayerTxt("X");
-      setPlayerTurn((prev) => prev + 1);
+    const newBoard = [...board];
+
+    if (playerTurn === 0) {
+      newBoard[index] = "X";
+      setPlayerTurn(1);
     } else {
-      setPlayerTxt("0");
-      setPlayerTurn((prev) => prev - 1);
+      newBoard[index] = "0";
+      setPlayerTurn(0);
     }
+
+    setBoard(newBoard);
+  };
+
+  const handleReset = () => {
+    setBoard(Array(9).fill(""));
   };
 
   return (
     <div className="board">
       <Tile
         className={"right-border bottom-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(0)}
+        player={board[0]}
       />
       <Tile
         className={"right-border bottom-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(1)}
+        player={board[1]}
       />
       <Tile
         className={"bottom-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(2)}
+        player={board[2]}
       />
       <Tile
         className={"right-border bottom-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(3)}
+        player={board[3]}
       />
       <Tile
         className={"right-border bottom-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(4)}
+        player={board[4]}
       />
       <Tile
         className={"bottom-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(5)}
+        player={board[5]}
       />
       <Tile
         className={"right-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(6)}
+        player={board[6]}
       />
       <Tile
         className={"right-border"}
-        onClick={playerPlay}
-        player={playerTxt}
+        onClick={() => handleClick(7)}
+        player={board[7]}
       />
-      <Tile onClick={playerPlay} player={playerTxt} />
+      <Tile onClick={() => handleClick(8)} player={board[8]} />
       <Strike />
+      <Reset onClick={handleReset} />
     </div>
   );
 }
