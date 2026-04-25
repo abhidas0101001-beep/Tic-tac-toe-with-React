@@ -3,7 +3,12 @@ import Board from "./Board";
 function TicTacToe() {
   return (
     <div>
-      <h1>TicTacToe</h1>
+      <h1
+        className="text-4xl font-extrabold bg-gradient-to-r 
+from-cyan-400 to-blue-500 text-transparent bg-clip-text"
+      >
+        TicTacToe
+      </h1>
       <Board />
     </div>
   );

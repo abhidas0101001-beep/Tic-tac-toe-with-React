@@ -1,27 +1,33 @@
 import Reset from "./Reset";
-import Strike from "./Strike";
 import Tile from "./Tile";
 import { useState } from "react";
 import { useEffect } from "react";
+import Timer from "./Timer";
+import PlayerX from "./PlayerX";
+import Player0 from "./Player0";
 
 function Board() {
   const [board, setBoard] = useState(Array(9).fill(""));
-  const [playerTurn, setPlayerTurn] = useState(0);
+  const [playerTurn, setPlayerTurn] = useState("");
   const [lastMove, setLastMove] = useState(null);
-  let check = "null";
-  const [winner, setWinner] = useState(null);
+  const [winner, setWinner] = useState("");
+  const [playerX_Timer, setPlayerX_Timer] = useState(0);
+  const [player0_Timer, setPlayer0_Timer] = useState(0);
+  const [player0Interval, setPlayer0Interval] = useState(null);
+
+  let interval;
 
   const handleClick = (index) => {
-    if (board[index] !== "") return;
+    if (board[index] !== "" || winner !== "") return;
 
     const newBoard = [...board];
 
-    if (playerTurn === 0) {
+    if (playerTurn === "X") {
       newBoard[index] = "X";
-      setPlayerTurn(1);
+      setPlayerTurn("0");
     } else {
       newBoard[index] = "0";
-      setPlayerTurn(0);
+      setPlayerTurn("X");
     }
 
     setBoard(newBoard);
@@ -30,7 +36,11 @@ function Board() {
 
   const handleReset = () => {
     setBoard(Array(9).fill(""));
-    setWinner(null);
+    setWinner("");
+    clearInterval(interval);
+    setPlayer0_Timer(0);
+    setPlayerX_Timer(0);
+    setPlayerTurn("");
   };
 
   const handleWin = () => {
@@ -46,7 +56,6 @@ function Board() {
     ];
     for (let [A, B, C] of wins) {
       if (board[A] && board[A] === board[B] && board[A] === board[C]) {
-        console.log("Winner:", board[A]);
         setWinner(board[A]);
         return;
       }
@@ -55,12 +64,29 @@ function Board() {
 
   useEffect(() => {
     if (lastMove !== null) {
-      console.log("Updated index", lastMove);
-      check = board[lastMove];
-      console.log("Value:", check);
       handleWin();
     }
-  }, [board]);
+  }, [board]); //for handle win
+
+  useEffect(() => {
+    if (winner !== "") {
+      return;
+    }
+
+    if (playerTurn !== "") {
+      if (playerTurn === "0") {
+        interval = setInterval(() => {
+          setPlayer0_Timer((prev) => prev + 1);
+        }, 100);
+      } else {
+        interval = setInterval(() => {
+          setPlayerX_Timer((prev) => prev + 1);
+        }, 100);
+      }
+
+      return () => clearInterval(interval);
+    }
+  }, [playerTurn, winner]);
 
   return (
     <div className="board">
@@ -126,8 +152,9 @@ function Board() {
         }}
         player={board[8]}
       />
-      <Strike winner={winner} />
+      <Player0 timer={player0_Timer} winner={winner} />
       <Reset onClick={handleReset} />
+      <PlayerX timer={playerX_Timer} winner={winner} />
     </div>
   );
 }
